@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace WebApplication.knowledge
 {
@@ -13,9 +9,12 @@ namespace WebApplication.knowledge
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            
 
-           
+            //HttpContext.SignInAsync("AdminUser", identityPrincipal);
+            //identity.AddClaim(new Claim(ClaimTypes.Role, "AdminUser"));
+
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -1,29 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication.knowledge.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles = "AdminUser")]
     public class AdminController : Controller
     {
-        private readonly IMyDependency _myDependency;
+        //private readonly IMyDependency _myDependency;
 
-        public AdminController(IMyDependency myDependency)
+        public AdminController()
         {
-            this._myDependency = myDependency;
+            //this._myDependency = myDependency;
         }
 
-        //[HttpGet]
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        [HttpGet]
-        public JsonResult Get()
+        public IActionResult Index()
         {
-            string name = _myDependency.WriteMessage("ABC").Result;
-            return Json(name);
+            return View();
         }
     }
 }
