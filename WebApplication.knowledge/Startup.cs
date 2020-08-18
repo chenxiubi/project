@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Security.Claims;
 
 namespace WebApplication.knowledge
@@ -16,16 +18,27 @@ namespace WebApplication.knowledge
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication("AdminUser").AddCookie("AdminUser");
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administrator", policy => policy.RequireClaim("Administrator"));
+            });
             //services.AddSingleton<IAuthorizationHandler, MyHandler1>();
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Home/NotPermission");
+                options.LoginPath = new PathString("/Login/Index2");
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
+            });
             services.AddControllers();
             //services.AddControllersWithViews();
             services.AddMvc();
             //services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>();
-            services.AddScoped<IMyDependency, MyDependency>();
-            
+            //services.AddScoped<IMyDependency, MyDependency>();
+
             //services.AddTransient(ctx =>
             //new AdminController(new MyDependency()));
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +55,7 @@ namespace WebApplication.knowledge
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCookiePolicy();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

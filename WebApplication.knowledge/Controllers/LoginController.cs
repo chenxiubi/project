@@ -28,5 +28,19 @@ namespace WebApplication.knowledge.Controllers
             });
             return RedirectToAction("Index", "Admin");
         }
+
+        public async Task<IActionResult> Index2()
+        {
+            //
+            var claims = new List<Claim>(){
+                new Claim(ClaimTypes.Name,"李四"),
+                new Claim("Administrator","Administrator"),
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var identityPrincipal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, identityPrincipal, new AuthenticationProperties());
+            return RedirectToAction("Index", "Employee");
+        }
     }
 }
