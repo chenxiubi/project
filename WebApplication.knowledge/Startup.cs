@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Security.Claims;
 
 namespace WebApplication.knowledge
 {
@@ -29,6 +27,12 @@ namespace WebApplication.knowledge
                 options.LoginPath = new PathString("/Login/Index2");
                 options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
             });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AtLeast21", policy =>
+                    policy.Requirements.Add(new MinimumAgeRequirement(21)));
+            });
+            services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
             services.AddControllers();
             //services.AddControllersWithViews();
             services.AddMvc();
