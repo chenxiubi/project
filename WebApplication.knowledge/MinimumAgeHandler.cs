@@ -11,12 +11,17 @@ namespace WebApplication.knowledge
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MinimumAgeRequirement requirement)
         {
+<<<<<<< HEAD
             foreach (var item in context.User.Claims)
             {
                 string itemName = item.Type + item.Value + item.Issuer;
             }
             if (!context.User.HasClaim(c => c.Type == ClaimTypes.Name &&
                                         c.Value == "Administrator"))
+=======
+            if (!context.User.HasClaim(c => c.Type == ClaimTypes.DateOfBirth &&
+                                        c.Issuer == "http://contoso.com"))
+>>>>>>> 2fa09d5af5840424aac6a8afa59b809f48c25e9f
             {
                 //TODO: Use the following if targeting a version of
                 //.NET Framework older than 4.6:

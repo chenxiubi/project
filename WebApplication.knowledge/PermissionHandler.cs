@@ -14,6 +14,7 @@ namespace WebApplication.knowledge
 
             foreach (var requirement in pendingRequirements)
             {
+<<<<<<< HEAD
                 //if (requirement is ReadPermission)
                 //{
                 //    if (IsOwner(context.User, context.Resource) ||
@@ -30,6 +31,24 @@ namespace WebApplication.knowledge
                 //        context.Succeed(requirement);
                 //    }
                 //}
+=======
+                if (requirement is ReadPermission)
+                {
+                    if (IsOwner(context.User, context.Resource) ||
+                        IsSponsor(context.User, context.Resource))
+                    {
+                        context.Succeed(requirement);
+                    }
+                }
+                else if (requirement is EditPermission ||
+                         requirement is DeletePermission)
+                {
+                    if (IsOwner(context.User, context.Resource))
+                    {
+                        context.Succeed(requirement);
+                    }
+                }
+>>>>>>> 2fa09d5af5840424aac6a8afa59b809f48c25e9f
             }
 
             //TODO: Use the following if targeting a version of
